@@ -1,6 +1,8 @@
 
 import './App.css';
+import {create as ipfsHttpClient} from 'ipfs-http-client';
 
+const client = ipfsHttpClient('');
 function App() {
   return (
     <div className="App">
