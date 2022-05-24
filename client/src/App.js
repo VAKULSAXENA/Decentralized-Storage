@@ -6,21 +6,21 @@ import React,{useState} from 'react';
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 function App() {
-  let[start,setStart]=useState(false);
+  let[start,setStart]=useState('');
   return (
     <div className="App" style={{marginTop:25}}>
       <button onClick={()=>{
-        setStart(true)
+        setStart('ipfs')
       }}>IPFS</button>
       <button onClick={()=>{
-        setStart(true)
+        setStart('filecoin')
       }}>FILECOIN</button>
       <button onClick={()=>{
-        setStart(true)}}>ARWEAVE</button>
+        setStart('arweave')}}>ARWEAVE</button>
       <button onClick={()=>{
-        setStart(true)}}>NFT STORAGE</button>
+        setStart('nftstorage')}}>NFT STORAGE</button>
       {
-        start?
+        start==='ipfs'?
       <div>
       <label>
        <p>Upload Image</p>
@@ -35,7 +35,17 @@ function App() {
          setStart(false)
        }}/>
      </label>
-     </div>:''
+     </div>:start==='filecoin'?
+     <div>
+     <p>Upload Image</p>
+     </div>:start==='arweave'?
+      <div>
+      <p>Upload Image</p>
+      </div>:
+       <div>
+       {/* <p>Upload Image</p> */}
+       </div>
+
 }
       </div>
   
