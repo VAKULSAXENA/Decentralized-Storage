@@ -1,9 +1,12 @@
 
 import './App.css';
+import Arweave from 'arweave';
 import {create as ipfsHttpClient} from 'ipfs-http-client';
 import React,{useState} from 'react';
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+const arweave = Arweave.init({host:'arweave.net',port:443,protocol:'https',timeout:20000,logging:false});
+
 
 function App() {
   let[start,setStart]=useState('');
@@ -23,7 +26,7 @@ function App() {
         start==='ipfs'?
       <div>
       <label>
-       <p>Upload Image</p>
+       <p>Upload Image on IPFS</p>    {/* IPFS */}
        <input placeholder='Upload' type='file'
        onChange={async(e)=>{
          const file = e.target.files[0]
@@ -37,13 +40,46 @@ function App() {
      </label>
      </div>:start==='filecoin'?
      <div>
-     <p>Upload Image</p>
+      <label>
+       <p>Upload Image on FILECOIN</p>  {/* FILECOIN */}
+       <input placeholder='Upload' type='file'
+       onChange={async(e)=>{
+         const file = e.target.files[0]
+        
+       }}
+         />
+         </label>
      </div>:start==='arweave'?
       <div>
-      <p>Upload Image</p>
+      <label>
+       <p>Upload Image on ARWEAVE</p>   {/* ARWEAVE */}
+       <input placeholder='Upload' type='file'
+       onChange={async(e)=>{
+         const file = e.target.files[0]
+         const transaction = await arweave.createTransaction({
+          data:file
+
+         })
+         await arweave.transactions.sign(transaction,"Arweave WALLET JSON without ext:true");
+         const response=await arweave.transactions.post(transaction);
+         console.log(response);
+         const url = transaction.id?`https://arweave.net/${transaction.id}`:undefined;
+         console.log(url);
+        }}
+         />
+         </label>
       </div>:
        <div>
-       {/* <p>Upload Image</p> */}
+        <label>
+       <p>Upload Image on NFTSTORAGE</p>    {/* NFTSTORAGE */}
+       <input placeholder='Upload' type='file'
+       onChange={async(e)=>{
+         const file = e.target.files[0]
+
+         
+       }}
+         />
+         </label>
        </div>
 
 }
